@@ -15,12 +15,8 @@ public class Like {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    private User user;
-
-    @ManyToOne
-    private Post post;
+    private Long userId;
+    private Long postId;
 
     private LocalDateTime likedAt;
-
 }

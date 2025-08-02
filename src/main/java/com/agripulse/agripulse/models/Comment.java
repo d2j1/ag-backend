@@ -11,11 +11,11 @@ public class Comment {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    private Post post;
+    private Long postId;
 
-    @ManyToOne
-    private User user;
+    private String userName;
+    private Long userId;
+    private String profileImageUrl;
 
     @Column(length = 500)
     private String content;

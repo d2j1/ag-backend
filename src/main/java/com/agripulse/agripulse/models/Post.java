@@ -13,8 +13,9 @@ public class Post {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    private User user;
+    private String userName;
+    private Long userId;
+    private String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
     private PostType type;
@@ -29,14 +30,9 @@ public class Post {
 
     private LocalDateTime updatedAt;
 
-//    @OneToMany( mappedBy = "post", cascade = CascadeType.ALL)
-//    private List<Image> images;
-//
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-//    private List<Like> likes;
-//
-//    @OneToMany(mappedBy = "comment", cascade= CascadeType.ALL)
-//    private List<Comment> comments;
+
+
+    private Long likeCount;
 
     private int shareCount;
 }
