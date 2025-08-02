@@ -29,14 +29,14 @@ public class Post {
 
     private LocalDateTime updatedAt;
 
-    @OneToMany( mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Image> images;
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Like> likes;
-
-    @OneToMany(mappedBy = "comment", cascade= CascadeType.ALL)
-    private List<Comment> comments;
+//    @OneToMany( mappedBy = "post", cascade = CascadeType.ALL)
+//    private List<Image> images;
+//
+//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+//    private List<Like> likes;
+//
+//    @OneToMany(mappedBy = "comment", cascade= CascadeType.ALL)
+//    private List<Comment> comments;
 
     private int shareCount;
 }
