@@ -20,7 +20,7 @@ public class Post {
     private UUID id;
 
     private String userName;
-    private Long userId;
+    private UUID userId;
     private String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
