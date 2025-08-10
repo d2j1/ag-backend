@@ -1,4 +1,4 @@
-package com.agripulse.agripulse.DTO;
+package com.agripulse.agripulse.dto;
 
 import com.agripulse.agripulse.models.CTAType;
 import com.agripulse.agripulse.models.PostType;

@@ -1,19 +1,21 @@
-package com.agripulse.agripulse.DTO;
+package com.agripulse.agripulse.dto;
 
 import com.agripulse.agripulse.models.CTAType;
 import com.agripulse.agripulse.models.PostType;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostDto {
 
     private UUID id;

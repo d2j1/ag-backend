@@ -1,7 +1,7 @@
 package com.agripulse.agripulse.services;
 
-import com.agripulse.agripulse.DTO.PaginatedResponse;
-import com.agripulse.agripulse.DTO.PostResponseDto;
+import com.agripulse.agripulse.dto.PaginatedResponse;
+import com.agripulse.agripulse.dto.PostResponseDto;
 import com.agripulse.agripulse.exceptions.NoPostsFoundException;
 import com.agripulse.agripulse.exceptions.PostNotCreatedException;
 import com.agripulse.agripulse.exceptions.PostNotFoundException;
@@ -13,11 +13,13 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class PostServiceImpl implements PostService{
 
     private final PostRepository postRepository;
@@ -30,6 +32,7 @@ public class PostServiceImpl implements PostService{
     public Post createPost(Post post) throws PostNotCreatedException {
 
         try{
+            System.out.println("This is working!");
             return postRepository.save(post);
         }catch (DataIntegrityViolationException e){
             // invalid data in post like nulls
@@ -49,6 +52,7 @@ public class PostServiceImpl implements PostService{
 
         // throwing exception for first page
         if (pageNumber == 0 && postPage.isEmpty()) {
+
             throw new NoPostsFoundException("No posts found.");
         }
 
@@ -56,7 +60,7 @@ public class PostServiceImpl implements PostService{
                 .map(PostMapper::toResponseDto)
                 .toList();
 
-        return new PaginatedResponse<>(
+        return new PaginatedResponse<PostResponseDto>(
                 postDtos,
                 postPage.getNumber(),
                 postPage.getTotalPages(),

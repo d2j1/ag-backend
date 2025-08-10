@@ -19,7 +19,7 @@ public class ExceptionHandlers {
 
     @ExceptionHandler(NoPostsFoundException.class)
     public ResponseEntity<String> handleNoPostsFoundException(NoPostsFoundException exception){
-        return new ResponseEntity<>( exception.getMessage(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>( exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(PostNotCreatedException.class)

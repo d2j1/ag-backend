@@ -1,9 +1,12 @@
 package com.agripulse.agripulse.mapper;
 
-import com.agripulse.agripulse.DTO.PostDto;
-import com.agripulse.agripulse.DTO.PostResponseDto;
+import com.agripulse.agripulse.dto.PostDto;
+import com.agripulse.agripulse.dto.PostResponseDto;
 import com.agripulse.agripulse.models.Post;
+import lombok.Getter;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PostMapper {
 
     public static Post toEntity(PostDto dto){

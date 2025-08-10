@@ -1,15 +1,14 @@
 package com.agripulse.agripulse.controllers;
 
-import com.agripulse.agripulse.DTO.PaginatedResponse;
-import com.agripulse.agripulse.DTO.PostDto;
-import com.agripulse.agripulse.DTO.PostResponseDto;
+import com.agripulse.agripulse.dto.PaginatedResponse;
+import com.agripulse.agripulse.dto.PostDto;
+import com.agripulse.agripulse.dto.PostResponseDto;
 import com.agripulse.agripulse.exceptions.NoPostsFoundException;
 import com.agripulse.agripulse.exceptions.PostNotCreatedException;
 import com.agripulse.agripulse.exceptions.PostNotFoundException;
 import com.agripulse.agripulse.mapper.PostMapper;
 import com.agripulse.agripulse.models.Post;
 import com.agripulse.agripulse.services.PostServiceImpl;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +29,7 @@ public class PostController {
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(@RequestBody PostDto postDto) throws PostNotCreatedException {
         Post post = PostMapper.toEntity(postDto);
+        post = postServiceImpl.createPost(post);
         PostResponseDto responseDto = PostMapper.toResponseDto(post);
         return new ResponseEntity<>( responseDto, HttpStatus.CREATED);
     }

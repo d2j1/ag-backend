@@ -1,16 +1,12 @@
 package com.agripulse.agripulse.services;
 
-import com.agripulse.agripulse.DTO.PaginatedResponse;
-import com.agripulse.agripulse.DTO.PostDto;
-import com.agripulse.agripulse.DTO.PostResponseDto;
+import com.agripulse.agripulse.dto.PaginatedResponse;
+import com.agripulse.agripulse.dto.PostResponseDto;
 import com.agripulse.agripulse.exceptions.NoPostsFoundException;
 import com.agripulse.agripulse.exceptions.PostNotCreatedException;
 import com.agripulse.agripulse.exceptions.PostNotFoundException;
 import com.agripulse.agripulse.models.Post;
-import com.agripulse.agripulse.repositories.PostRepository;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 
