@@ -3,6 +3,8 @@ package com.agripulse.agripulse.services;
 import com.agripulse.agripulse.DTO.PaginatedResponse;
 import com.agripulse.agripulse.DTO.PostDto;
 import com.agripulse.agripulse.DTO.PostResponseDto;
+import com.agripulse.agripulse.exceptions.NoPostsFoundException;
+import com.agripulse.agripulse.exceptions.PostNotCreatedException;
 import com.agripulse.agripulse.exceptions.PostNotFoundException;
 import com.agripulse.agripulse.models.Post;
 import com.agripulse.agripulse.repositories.PostRepository;
@@ -14,10 +16,10 @@ import java.util.UUID;
 
 public interface PostService {
 
-    public Post createPost(Post post);
-    public PaginatedResponse<PostResponseDto> getAllPosts(int pageNumber, int pageSize);
-    public Post getPostById(UUID postId) throws PostNotFoundException;
-    public Post updatePost(UUID postId) throws PostNotFoundException;
-    public void deletePost(UUID postId) throws PostNotFoundException;
+     Post createPost(Post post) throws PostNotCreatedException;
+     PaginatedResponse<PostResponseDto> getAllPosts(int pageNumber, int pageSize) throws NoPostsFoundException;
+     Post getPostById(UUID postId) throws PostNotFoundException;
+     Post updatePost(UUID postId, Post post) throws PostNotFoundException, PostNotCreatedException;
+     void deletePost(UUID postId) throws PostNotFoundException;
 
 }
