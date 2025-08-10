@@ -20,7 +20,7 @@ public class PostMapper {
         return post;
     }
 
-    public static PostResponseDto toDto(Post post){
+    public static PostResponseDto toResponseDto(Post post){
         PostResponseDto postDto = new PostResponseDto();
 
         postDto.setContent(post.getContent());
@@ -30,6 +30,8 @@ public class PostMapper {
         postDto.setUserId(post.getUserId());
         postDto.setUserName(post.getUserName());
         postDto.setProfileImageUrl(post.getProfileImageUrl());
+        postDto.setLikeCount(post.getLikeCount());
+        postDto.setShareCount(post.getShareCount());
 
         return postDto;
     }

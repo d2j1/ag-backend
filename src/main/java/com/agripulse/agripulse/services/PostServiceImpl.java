@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostService{
         }
 
         List<PostResponseDto> postDtos = postPage.getContent().stream()
-                .map(PostMapper::toDto)
+                .map(PostMapper::toResponseDto)
                 .toList();
 
         return new PaginatedResponse<>(

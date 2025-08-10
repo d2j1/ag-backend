@@ -24,7 +24,10 @@ public class PostResponseDto {
 
     private String content;
 
+    private Long likeCount;
+    private Long shareCount;
     // will store image urls in this when fetched from the database from image table
     // upload all these images from frontend to s3 and get the urls and send those urls here
     private List<String> imageUrls;
+
 }
