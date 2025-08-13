@@ -29,6 +29,7 @@ public class CommentMapper {
         commentResponseDto.setProfileImageUrl(comment.getProfileImageUrl());
         commentResponseDto.setPostId(comment.getPostId());
         commentResponseDto.setCreatedAt(comment.getCreatedAt());
+        commentResponseDto.setId(comment.getId());
 
         return commentResponseDto;
     }

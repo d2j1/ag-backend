@@ -17,5 +17,5 @@ public interface CommentService {
     // paginated
     PaginatedResponse<CommentResponseDto> getCommentsByPostId(UUID postId, int pageNumber, int size) throws NoCommentsFoundException;
     void deleteComment(UUID commentId) throws CommentNotFoundException;
-    List<Comment> getCommentByUserId(UUID userId, int pageNumber, int size);
+    PaginatedResponse<CommentResponseDto> getCommentByUserId(UUID userId, int pageNumber, int size) throws NoCommentsFoundException;
 }
