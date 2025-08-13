@@ -18,4 +18,5 @@ public interface PostService {
      Post updatePost(UUID postId, Post post) throws PostNotFoundException, PostNotCreatedException;
      void deletePost(UUID postId) throws PostNotFoundException;
 
+    void validatePostExists(UUID postId) throws PostNotFoundException;
 }

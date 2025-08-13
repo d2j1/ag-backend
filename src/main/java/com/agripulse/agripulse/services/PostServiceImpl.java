@@ -32,7 +32,7 @@ public class PostServiceImpl implements PostService{
     public Post createPost(Post post) throws PostNotCreatedException {
 
         try{
-            System.out.println("This is working!");
+
             return postRepository.save(post);
         }catch (DataIntegrityViolationException e){
             // invalid data in post like nulls
@@ -96,6 +96,13 @@ public class PostServiceImpl implements PostService{
         try{
         postRepository.deleteById(postId);
         }catch (EmptyResultDataAccessException e){
+            throw new PostNotFoundException(postId, "Post not found");
+        }
+    }
+
+    @Override
+    public void validatePostExists(UUID postId) throws PostNotFoundException {
+        if (!postRepository.existsById(postId)) {
             throw new PostNotFoundException(postId, "Post not found");
         }
     }

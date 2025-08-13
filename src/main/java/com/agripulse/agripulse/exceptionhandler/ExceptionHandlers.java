@@ -1,5 +1,6 @@
 package com.agripulse.agripulse.exceptionhandler;
 
+import com.agripulse.agripulse.exceptions.NoCommentsFoundException;
 import com.agripulse.agripulse.exceptions.NoPostsFoundException;
 import com.agripulse.agripulse.exceptions.PostNotCreatedException;
 import com.agripulse.agripulse.exceptions.PostNotFoundException;
@@ -29,6 +30,11 @@ public class ExceptionHandlers {
 
     @ExceptionHandler(PostNotFoundException.class)
     public ResponseEntity<String> handlePostNotFoundException( PostNotFoundException exception){
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoCommentsFoundException.class)
+    public ResponseEntity<String> handleNoCommentsFoundException( NoCommentsFoundException exception){
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
