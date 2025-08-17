@@ -36,7 +36,8 @@ public class Post {
 
     private LocalDateTime updatedAt;
 
-    private Long likeCount;
+    @Column(nullable = false)
+    private Long likeCount = 0L;
 
     private Long shareCount;
 

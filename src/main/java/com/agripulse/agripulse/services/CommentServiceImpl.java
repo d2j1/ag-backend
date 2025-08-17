@@ -30,7 +30,6 @@ public class CommentServiceImpl implements CommentService{
     public Comment createComment(Comment comment) throws CommentNotCreatedException, PostNotFoundException {
 
         try{
-
             postServiceImpl.validatePostExists(comment.getPostId());
         return commentRepository.save(comment);
         }catch (DataIntegrityViolationException e){
@@ -65,11 +64,30 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public void deleteComment(UUID commentId) throws CommentNotFoundException {
-
+        if( !commentRepository.existsById(commentId)){
+            throw new CommentNotFoundException("Comment not found with id:");
+        }
+        commentRepository.deleteById(commentId);
     }
 
     @Override
-    public List<Comment> getCommentByUserId(UUID userId, int pageNumber, int size) {
-        return List.of();
+    public PaginatedResponse<CommentResponseDto> getCommentByUserId(UUID userId, int pageNumber, int size) throws NoCommentsFoundException {
+
+        Page<Comment> commentPage = commentRepository.findByUserId(userId, PageRequest.of(pageNumber, size));
+
+        if(commentPage.isEmpty()){
+            throw  new NoCommentsFoundException("No Comments found");
+        }
+
+        List<CommentResponseDto> commentResponseDtos = commentPage.getContent()
+                .stream()
+                .map(CommentMapper::toResponseDto)
+                .toList();
+
+        return new PaginatedResponse<CommentResponseDto>( commentResponseDtos,
+                commentPage.getNumber(),
+                commentPage.getTotalPages(),
+                commentPage.getTotalElements()
+                );
     }
 }

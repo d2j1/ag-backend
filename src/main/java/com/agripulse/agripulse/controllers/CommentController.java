@@ -4,8 +4,8 @@ package com.agripulse.agripulse.controllers;
 import com.agripulse.agripulse.dto.CommentDto;
 import com.agripulse.agripulse.dto.CommentResponseDto;
 import com.agripulse.agripulse.dto.PaginatedResponse;
-import com.agripulse.agripulse.dto.PostResponseDto;
 import com.agripulse.agripulse.exceptions.CommentNotCreatedException;
+import com.agripulse.agripulse.exceptions.CommentNotFoundException;
 import com.agripulse.agripulse.exceptions.NoCommentsFoundException;
 import com.agripulse.agripulse.exceptions.PostNotFoundException;
 import com.agripulse.agripulse.mapper.CommentMapper;
@@ -38,4 +38,17 @@ public class CommentController {
         PaginatedResponse<CommentResponseDto> comments = commentServiceImpl.getCommentsByPostId(postId, page, size);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<String> deleteComment( @PathVariable("commentId") UUID commentId) throws CommentNotFoundException {
+        commentServiceImpl.deleteComment(commentId);
+        return new ResponseEntity<>("Comment deleted", HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<PaginatedResponse<CommentResponseDto>> getAllCommentByUserId(@PathVariable("userId") UUID userId, @RequestParam("page") int page, @RequestParam("size") int size) throws NoCommentsFoundException {
+        PaginatedResponse<CommentResponseDto> comments = commentServiceImpl.getCommentByUserId(userId, page, size);
+        return new ResponseEntity<>(comments, HttpStatus.OK);
+    }
+
 }

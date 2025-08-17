@@ -14,6 +14,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -106,4 +107,30 @@ public class PostServiceImpl implements PostService{
             throw new PostNotFoundException(postId, "Post not found");
         }
     }
+
+    @Override
+    @Transactional
+    public long incrementLikeCount(UUID postId) throws PostNotFoundException {
+
+        long row = postRepository.incrementLikeCount(postId);
+
+        if(row == 0){
+            throw new PostNotFoundException(postId, "Post Not Found");
+        }
+        return postRepository.findLikeCountById(postId);
+    }
+
+    @Override
+    @Transactional
+    public long decrementLikeCount(UUID postId) throws PostNotFoundException {
+        long row = postRepository.decrementLikeCount(postId);
+
+        if( row == 0){
+            throw new PostNotFoundException(postId, "Post Not Found");
+        }
+
+        return postRepository.findLikeCountById(postId);
+    }
+
+
 }

@@ -19,4 +19,6 @@ public interface PostService {
      void deletePost(UUID postId) throws PostNotFoundException;
 
     void validatePostExists(UUID postId) throws PostNotFoundException;
+     long incrementLikeCount(UUID postId) throws PostNotFoundException;
+     long decrementLikeCount(UUID postId) throws PostNotFoundException;
 }
