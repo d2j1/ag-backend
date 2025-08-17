@@ -25,5 +25,6 @@ public class PostLike {
     private UUID userId;
     private UUID postId;
 
+
     private LocalDateTime likedAt;
 }

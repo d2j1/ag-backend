@@ -30,7 +30,6 @@ public class CommentServiceImpl implements CommentService{
     public Comment createComment(Comment comment) throws CommentNotCreatedException, PostNotFoundException {
 
         try{
-
             postServiceImpl.validatePostExists(comment.getPostId());
         return commentRepository.save(comment);
         }catch (DataIntegrityViolationException e){
