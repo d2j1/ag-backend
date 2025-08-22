@@ -1,11 +1,13 @@
-# configure these properties while deploying the application in AWS
+# application-prod.yml
+#spring:
+#  profiles: prod
 
 cloud:
   aws:
+    region: us-east-1
     s3:
       bucket: agripulse-images
       endpoint: https://s3.amazonaws.com
-    region: us-east-1
     credentials:
-      access-key: <YOUR_AWS_ACCESS_KEY>
-      secret-key: <YOUR_AWS_SECRET_KEY>
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}

@@ -44,4 +44,10 @@ public class ExceptionHandlers {
     public ResponseEntity<String> handleInvalidFileFormatException( InvalidFileFormatException exception){
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ImagesLimitException.class)
+    public ResponseEntity<String> handleImagesLimitException( ImagesLimitException exception){
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }

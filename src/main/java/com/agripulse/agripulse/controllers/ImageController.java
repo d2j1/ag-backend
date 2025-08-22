@@ -1,8 +1,12 @@
 package com.agripulse.agripulse.controllers;
 
+import com.agripulse.agripulse.dto.ImageResponseDto;
 import com.agripulse.agripulse.exceptions.FileNotUploadedException;
+import com.agripulse.agripulse.exceptions.ImageNotSavedException;
+import com.agripulse.agripulse.exceptions.ImagesLimitException;
 import com.agripulse.agripulse.exceptions.InvalidFileFormatException;
 import com.agripulse.agripulse.models.Image;
+import com.agripulse.agripulse.services.ImageService;
 import com.agripulse.agripulse.services.S3StorageServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,20 +28,25 @@ import java.util.UUID;
 public class ImageController {
 
     private final S3StorageServiceImpl s3StorageServiceImpl;
+    private final ImageService imageService;
 
-    public ImageController(S3StorageServiceImpl s3StorageService){
+
+
+    public ImageController(S3StorageServiceImpl s3StorageService, ImageService imageService){
         this.s3StorageServiceImpl = s3StorageService;
+        this.imageService = imageService;
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadImages(@RequestParam("images") List<MultipartFile> files, @RequestParam("postId") UUID postId) throws InvalidFileFormatException, FileNotUploadedException, IOException {
+    public ResponseEntity<ImageResponseDto> uploadImages(@RequestParam("images") List<MultipartFile> files, @RequestParam("postId") UUID postId) throws InvalidFileFormatException, FileNotUploadedException, IOException, ImageNotSavedException, ImagesLimitException {
 
         if(files.size() >5){
-            return new ResponseEntity<>("Only 5 images are allowed per post!", HttpStatus.BAD_REQUEST);
+            throw new ImagesLimitException("Only 5 images are allowed per post!");
         }
 
         //iterate
         short i=0;
+        List<String> imageUrls = new ArrayList<>();
 
         for( MultipartFile file : files){
 
@@ -46,7 +56,7 @@ public class ImageController {
 
             if (contentType == null ||
                     !(contentType.equals("image/jpeg") || contentType.equals("image/png"))) {
-                return new ResponseEntity<>("Only PNG and JPEG images are allowed", HttpStatus.BAD_REQUEST);
+                throw new InvalidFileFormatException("Only PNG and JPEG images are allowed");
             }
 
 
@@ -63,9 +73,17 @@ public class ImageController {
             image.setImageSize(file.getSize());
             image.setPost_id(postId);
 
+            imageService.save(image);
+            imageUrls.add(url);
+
             i++;
         }
 
+        ImageResponseDto responseDto = new ImageResponseDto();
+        responseDto.setImageUrls(imageUrls);
+        responseDto.setPostId(postId);
+
+        return new ResponseEntity<>(responseDto, HttpStatus.ACCEPTED);
     }
 
 

@@ -3,6 +3,7 @@ package com.agripulse.agripulse.services;
 import com.agripulse.agripulse.exceptions.FileNotUploadedException;
 import com.agripulse.agripulse.exceptions.InvalidFileFormatException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.exception.SdkClientException;
@@ -13,6 +14,7 @@ import software.amazon.awssdk.services.s3.model.*;
 import java.io.IOException;
 import java.util.UUID;
 
+@Service
 public class S3StorageServiceImpl implements S3StorageService{
 
     private final S3Client s3Client;
@@ -28,6 +30,7 @@ public class S3StorageServiceImpl implements S3StorageService{
 
     @Override
     public String uploadFile(MultipartFile file) throws IOException, FileNotUploadedException, InvalidFileFormatException {
+
         String key = UUID.randomUUID() + "-" + file.getOriginalFilename();
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
@@ -42,6 +45,7 @@ public class S3StorageServiceImpl implements S3StorageService{
         }catch(IOException exception){
             throw new InvalidFileFormatException("Invalid file format for the image");
         }catch(S3Exception | SdkClientException exception){
+            exception.printStackTrace();
             throw new FileNotUploadedException("Could not upload the image");
         }
 
