@@ -1,11 +1,15 @@
 package com.agripulse.agripulse.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 public class Image {
 
     @Id
@@ -22,7 +26,7 @@ public class Image {
     private int imageWidth;
     private int imageHeight;
 
-    private int imageSize;
+    private long imageSize;
 
     private LocalDateTime uploadedAt;
 

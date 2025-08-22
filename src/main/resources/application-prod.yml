@@ -1,0 +1,13 @@
+# application-prod.yml
+#spring:
+#  profiles: prod
+
+cloud:
+  aws:
+    region: us-east-1
+    s3:
+      bucket: agripulse-images
+      endpoint: https://s3.amazonaws.com
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}

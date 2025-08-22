@@ -1,9 +1,6 @@
 package com.agripulse.agripulse.exceptionhandler;
 
-import com.agripulse.agripulse.exceptions.NoCommentsFoundException;
-import com.agripulse.agripulse.exceptions.NoPostsFoundException;
-import com.agripulse.agripulse.exceptions.PostNotCreatedException;
-import com.agripulse.agripulse.exceptions.PostNotFoundException;
+import com.agripulse.agripulse.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -37,4 +34,20 @@ public class ExceptionHandlers {
     public ResponseEntity<String> handleNoCommentsFoundException( NoCommentsFoundException exception){
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(FileNotUploadedException.class)
+    public ResponseEntity<String> handleFileNotUploadedException( FileNotUploadedException exception){
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler(InvalidFileFormatException.class)
+    public ResponseEntity<String> handleInvalidFileFormatException( InvalidFileFormatException exception){
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ImagesLimitException.class)
+    public ResponseEntity<String> handleImagesLimitException( ImagesLimitException exception){
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }

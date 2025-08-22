@@ -1,0 +1,12 @@
+# application-local.yml
+
+
+cloud:
+  aws:
+    region: us-east-1
+    s3:
+      bucket: agripulse-images
+      endpoint: http://localhost:4566
+    credentials:
+      access-key: test
+      secret-key: test

@@ -128,7 +128,6 @@ public class PostServiceImpl implements PostService{
         if( row == 0){
             throw new PostNotFoundException(postId, "Post Not Found");
         }
-
         return postRepository.findLikeCountById(postId);
     }
 
