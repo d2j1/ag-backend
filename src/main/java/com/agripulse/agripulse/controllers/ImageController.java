@@ -71,7 +71,7 @@ public class ImageController {
             image.setImageHeight(bufferedImage.getHeight());
             image.setImageWidth(bufferedImage.getWidth());
             image.setImageSize(file.getSize());
-            image.setPost_id(postId);
+            image.setPostId(postId);
 
             imageService.save(image);
             imageUrls.add(url);

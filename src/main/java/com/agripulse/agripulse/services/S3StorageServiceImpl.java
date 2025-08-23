@@ -1,5 +1,6 @@
 package com.agripulse.agripulse.services;
 
+import com.agripulse.agripulse.exceptions.FileNotFoundException;
 import com.agripulse.agripulse.exceptions.FileNotUploadedException;
 import com.agripulse.agripulse.exceptions.InvalidFileFormatException;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,8 +65,33 @@ public class S3StorageServiceImpl implements S3StorageService{
         return objectBytes.asByteArray();
     }
 
+    @Override
+    public void deleteFileByUrl(String fileUrl) throws FileNotFoundException {
+
+        try{
+            String key = extractKeyFromUrl(fileUrl);
+            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
+
+            s3Client.deleteObject(deleteObjectRequest);
+        }catch (S3Exception | SdkClientException exception){
+            throw new FileNotFoundException("Could not find the image: "+ fileUrl);
+        }
+    }
 
     private String endpointUrl() {
         return endpoint.replaceAll("/$", "") + "/" + bucketName;
+    }
+
+    private String extractKeyFromUrl(String fileUrl){
+           String baseUrl = endpointUrl()+"/";
+
+           if(fileUrl.startsWith(baseUrl)){
+               return fileUrl.substring(baseUrl.length());
+           }else {
+               throw new IllegalArgumentException("Invalid file URL: "+ fileUrl);
+           }
     }
 }
