@@ -14,7 +14,7 @@ public interface ImageService {
 
     Image findById(UUID id) throws ImageNotFoundException;
     List<Image> findAll();
-    List<Image> findByPostId(UUID postId);
+    List<Image> findByPostId(UUID postId) throws ImageNotFoundException;
 
     void delete(UUID id);
     Image update(UUID id, Image image);
