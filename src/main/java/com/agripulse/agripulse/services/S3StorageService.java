@@ -1,5 +1,6 @@
 package com.agripulse.agripulse.services;
 
+import com.agripulse.agripulse.exceptions.FileNotFoundException;
 import com.agripulse.agripulse.exceptions.FileNotUploadedException;
 import com.agripulse.agripulse.exceptions.InvalidFileFormatException;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,4 +11,5 @@ public interface S3StorageService {
     String uploadFile(MultipartFile file) throws IOException, FileNotUploadedException, InvalidFileFormatException;
     byte[] getFile(String key);
 
+    void deleteFileByUrl(String fileUrl) throws FileNotFoundException;
 }

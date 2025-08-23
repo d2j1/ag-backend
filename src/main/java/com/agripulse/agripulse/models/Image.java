@@ -16,7 +16,7 @@ public class Image {
     @GeneratedValue
     private UUID id;
 
-    private UUID post_id;
+    private UUID postId;
 
     // s3 bucket url
     private String imageUrl;

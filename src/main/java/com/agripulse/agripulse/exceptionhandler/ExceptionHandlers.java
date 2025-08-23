@@ -50,4 +50,5 @@ public class ExceptionHandlers {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+
 }

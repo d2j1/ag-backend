@@ -2,14 +2,16 @@ package com.agripulse.agripulse.services;
 
 import com.agripulse.agripulse.dto.ImageResponseDto;
 import com.agripulse.agripulse.dto.PaginatedResponse;
-import com.agripulse.agripulse.dto.PostResponseDto;
+import com.agripulse.agripulse.exceptions.FileNotFoundException;
+import com.agripulse.agripulse.exceptions.FileNotUploadedException;
 import com.agripulse.agripulse.exceptions.ImageNotFoundException;
 import com.agripulse.agripulse.exceptions.ImageNotSavedException;
-import com.agripulse.agripulse.exceptions.PostNotCreatedException;
 import com.agripulse.agripulse.models.Image;
 import com.agripulse.agripulse.repositories.ImageRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,9 +20,11 @@ import java.util.*;
 public class ImageServiceImpl implements ImageService{
 
     private final ImageRepository imageRepository;
+    private final S3StorageService s3StorageService;
 
-    public ImageServiceImpl(ImageRepository imageRepository){
+    public ImageServiceImpl(ImageRepository imageRepository, S3StorageService s3StorageService){
         this.imageRepository = imageRepository;
+        this.s3StorageService = s3StorageService;
     }
 
     @Override
@@ -49,31 +53,39 @@ public class ImageServiceImpl implements ImageService{
         return imageOptional.get();
     }
 
-    @Override
-    public List<Image> findAll() {
-        return List.of();
-    }
 
-//    @Override
-//    public PaginatedResponse<ImageResponseDto> findAll() {
-//
-//        List<Image> images = imageRepository.findAll();
-//
-//        HashMap<UUID, List<String>> postIdAndImages = new HashMap<>();
-//
-//        for(Image image : images){
-//            List<String> urls = postIdAndImages.getOrDefault(image.getPost_id(), new ArrayList<String>());
-//
-//            urls.add(image.getImageUrl());
-//
-//            postIdAndImages.put(image.getPost_id(), urls);
-//        }
-//
-//
-//
-//
-//        return List.of();
-//    }
+    @Override
+    public PaginatedResponse<ImageResponseDto> getAllImages(int pageNumber, int pageSize) {
+
+        Page<Image> imagePage = imageRepository.findAll(PageRequest.of(pageNumber, pageSize));
+
+        HashMap<UUID, List<String>> postIdAndImages = new HashMap<>();
+
+        for(Image image : imagePage.getContent()){
+            List<String> urls = postIdAndImages.getOrDefault(image.getPostId(), new ArrayList<String>());
+
+            urls.add(image.getImageUrl());
+
+            postIdAndImages.put(image.getPostId(), urls);
+        }
+
+        List<ImageResponseDto> imageResponseDtos = new ArrayList<>();
+
+        for(UUID postId : postIdAndImages.keySet()){
+            ImageResponseDto dto = new ImageResponseDto();
+            dto.setPostId(postId);
+            dto.setImageUrls(postIdAndImages.get(postId));
+
+            imageResponseDtos.add(dto);
+        }
+
+
+        return new PaginatedResponse<>(imageResponseDtos,
+                imagePage.getNumber(),
+                imagePage.getTotalPages(),
+                imagePage.getTotalElements()
+                );
+    }
 
     @Override
     public List<Image> findByPostId(UUID postId) throws ImageNotFoundException {
@@ -87,7 +99,25 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public void delete(UUID id) {
+    public void deleteByImageId(UUID id) throws ImageNotFoundException, FileNotFoundException {
+
+        Optional<Image> imageOptional = imageRepository.findById(id);
+        if(imageOptional.isEmpty()){
+            throw new ImageNotFoundException("Image not found for "+id);
+        }
+
+        Image image = imageOptional.get();
+
+        s3StorageService.deleteFileByUrl(image.getImageUrl());
+
+        imageRepository.delete(image);
+    }
+
+    @Override
+    public void deleteByPostId(UUID id) {
+
+        // delete image records from database
+        // and then delete images from s3 bucket also
 
     }
 

@@ -22,6 +22,7 @@ public class PostController {
     private final PostServiceImpl postServiceImpl;
 
     public PostController(PostServiceImpl postServiceImpl){
+
         this.postServiceImpl = postServiceImpl;
     }
 
