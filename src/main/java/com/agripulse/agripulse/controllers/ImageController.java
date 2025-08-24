@@ -1,19 +1,13 @@
 package com.agripulse.agripulse.controllers;
 
 import com.agripulse.agripulse.dto.ImageResponseDto;
-import com.agripulse.agripulse.exceptions.FileNotUploadedException;
-import com.agripulse.agripulse.exceptions.ImageNotSavedException;
-import com.agripulse.agripulse.exceptions.ImagesLimitException;
-import com.agripulse.agripulse.exceptions.InvalidFileFormatException;
+import com.agripulse.agripulse.exceptions.*;
 import com.agripulse.agripulse.models.Image;
 import com.agripulse.agripulse.services.ImageService;
 import com.agripulse.agripulse.services.S3StorageServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -86,5 +80,15 @@ public class ImageController {
         return new ResponseEntity<>(responseDto, HttpStatus.ACCEPTED);
     }
 
+    @DeleteMapping("/img/{imageId}")
+    public ResponseEntity<String> deleteImageById(@PathVariable("imageId") UUID imageId) throws FileNotFoundException, ImageNotFoundException {
+            imageService.deleteByImageId(imageId);
+            return new ResponseEntity<>("Image deleted Successfully for id "+imageId, HttpStatus.OK);
+    }
 
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<String> deleteImagesByPostId( @PathVariable("postId") UUID postId) throws FileNotFoundException, ImageNotFoundException {
+        imageService.deleteByPostId(postId);
+        return new ResponseEntity<>("Images Deleted Successfully for post id: "+ postId, HttpStatus.ACCEPTED);
+    }
 }

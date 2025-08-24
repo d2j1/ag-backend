@@ -81,11 +81,11 @@ public class S3StorageServiceImpl implements S3StorageService{
         }
     }
 
-    private String endpointUrl() {
+    public  String endpointUrl() {
         return endpoint.replaceAll("/$", "") + "/" + bucketName;
     }
 
-    private String extractKeyFromUrl(String fileUrl){
+    public String extractKeyFromUrl(String fileUrl){
            String baseUrl = endpointUrl()+"/";
 
            if(fileUrl.startsWith(baseUrl)){

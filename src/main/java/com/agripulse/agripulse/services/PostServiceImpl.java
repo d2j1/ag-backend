@@ -2,9 +2,7 @@ package com.agripulse.agripulse.services;
 
 import com.agripulse.agripulse.dto.PaginatedResponse;
 import com.agripulse.agripulse.dto.PostResponseDto;
-import com.agripulse.agripulse.exceptions.NoPostsFoundException;
-import com.agripulse.agripulse.exceptions.PostNotCreatedException;
-import com.agripulse.agripulse.exceptions.PostNotFoundException;
+import com.agripulse.agripulse.exceptions.*;
 import com.agripulse.agripulse.mapper.PostMapper;
 import com.agripulse.agripulse.models.Post;
 import com.agripulse.agripulse.repositories.PostRepository;
@@ -25,15 +23,17 @@ public class PostServiceImpl implements PostService{
 
     private final PostRepository postRepository;
 
-    public PostServiceImpl(PostRepository postRepository){
+    private final ImageService imageService;
+
+    public PostServiceImpl(PostRepository postRepository, ImageService imageService){
         this.postRepository = postRepository;
+        this.imageService = imageService;
     }
 
     @Override
     public Post createPost(Post post) throws PostNotCreatedException {
 
         try{
-
             return postRepository.save(post);
         }catch (DataIntegrityViolationException e){
             // invalid data in post like nulls
@@ -96,8 +96,12 @@ public class PostServiceImpl implements PostService{
     public void deletePost(UUID postId) throws PostNotFoundException {
         try{
         postRepository.deleteById(postId);
-        }catch (EmptyResultDataAccessException e){
+        imageService.deleteByPostId(postId);
+
+        }catch (EmptyResultDataAccessException ex ){
             throw new PostNotFoundException(postId, "Post not found");
+        }catch (ImageNotFoundException | FileNotFoundException exception){
+            // do nothing as this post might not have image in it
         }
     }
 
@@ -130,6 +134,4 @@ public class PostServiceImpl implements PostService{
         }
         return postRepository.findLikeCountById(postId);
     }
-
-
 }

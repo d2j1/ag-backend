@@ -94,7 +94,6 @@ public class ImageServiceImpl implements ImageService{
         if(images.isEmpty()){
             throw new ImageNotFoundException("Images not found for the provided post id: "+postId);
         }
-
         return images;
     }
 
@@ -107,30 +106,18 @@ public class ImageServiceImpl implements ImageService{
         }
 
         Image image = imageOptional.get();
-
         s3StorageService.deleteFileByUrl(image.getImageUrl());
-
         imageRepository.delete(image);
     }
 
     @Override
     public void deleteByPostId(UUID postId) throws ImageNotFoundException, FileNotFoundException {
 
-        // delete image records from database
-        // and then delete images from s3 bucket also
-
         List<Image> images = findByPostId(postId);
 
         for(Image image: images){
             s3StorageService.deleteFileByUrl(image.getImageUrl());
         }
-
         imageRepository.deleteAll(images);
-
-    }
-
-    @Override
-    public Image update(UUID id, Image image) {
-        return null;
     }
 }

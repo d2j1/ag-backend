@@ -3,9 +3,7 @@ package com.agripulse.agripulse.controllers;
 import com.agripulse.agripulse.dto.PaginatedResponse;
 import com.agripulse.agripulse.dto.PostDto;
 import com.agripulse.agripulse.dto.PostResponseDto;
-import com.agripulse.agripulse.exceptions.NoPostsFoundException;
-import com.agripulse.agripulse.exceptions.PostNotCreatedException;
-import com.agripulse.agripulse.exceptions.PostNotFoundException;
+import com.agripulse.agripulse.exceptions.*;
 import com.agripulse.agripulse.mapper.PostMapper;
 import com.agripulse.agripulse.models.Post;
 import com.agripulse.agripulse.services.PostServiceImpl;
@@ -48,7 +46,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<String> deletePost(@PathVariable("postId") UUID postId) throws PostNotFoundException {
+    public ResponseEntity<String> deletePost(@PathVariable("postId") UUID postId) throws PostNotFoundException, FileNotFoundException, ImageNotFoundException {
         postServiceImpl.deletePost(postId);
         return new ResponseEntity<>("Post with id "+postId+" deleted", HttpStatus.OK);
     }

@@ -13,7 +13,6 @@ import java.util.UUID;
 
 public interface ImageService {
 
-
     Image save(Image image) throws ImageNotSavedException;
 
     Image findById(UUID id) throws ImageNotFoundException;
@@ -22,13 +21,8 @@ public interface ImageService {
 
     List<Image> findByPostId(UUID postId) throws ImageNotFoundException;
 
-
-
     void deleteByImageId(UUID id) throws ImageNotFoundException, FileNotFoundException;
 
     void deleteByPostId(UUID id) throws ImageNotFoundException, FileNotFoundException;
-
-    Image update(UUID id, Image image);
-
 
 }
