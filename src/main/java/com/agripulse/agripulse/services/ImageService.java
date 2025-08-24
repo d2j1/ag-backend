@@ -26,7 +26,7 @@ public interface ImageService {
 
     void deleteByImageId(UUID id) throws ImageNotFoundException, FileNotFoundException;
 
-    void deleteByPostId(UUID id);
+    void deleteByPostId(UUID id) throws ImageNotFoundException, FileNotFoundException;
 
     Image update(UUID id, Image image);
 

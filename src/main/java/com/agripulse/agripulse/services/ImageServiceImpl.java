@@ -114,10 +114,18 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public void deleteByPostId(UUID id) {
+    public void deleteByPostId(UUID postId) throws ImageNotFoundException, FileNotFoundException {
 
         // delete image records from database
         // and then delete images from s3 bucket also
+
+        List<Image> images = findByPostId(postId);
+
+        for(Image image: images){
+            s3StorageService.deleteFileByUrl(image.getImageUrl());
+        }
+
+        imageRepository.deleteAll(images);
 
     }
 
